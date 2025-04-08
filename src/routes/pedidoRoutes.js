@@ -4,10 +4,10 @@ import { crearPedido, obtenerPedidos, obtenerPedidoPorId, actualizarEstadoPedido
 const router = express.Router();
 
 router.post("/crear", crearPedido);
-router.get('/', obtenerPedidos); 
-router.get('/:id', obtenerPedidoPorId); 
+router.get('/all', obtenerPedidos); 
+router.get('/pedido/:id', obtenerPedidoPorId); 
+router.delete('/cancelar/:id', cancelarPedido); 
 router.patch('/:id/estado', actualizarEstadoPedido); 
-router.delete('/:id', cancelarPedido); 
 
 
 export default router;
