@@ -2,7 +2,7 @@ import amqp from "amqplib";
 import dotenv from "dotenv";
 dotenv.config();
 
-const RABBITMQ_URL = process.env.RABBITMQ_URL || "amqp://localhost";
+const RABBITMQ_URL = process.env.RABBITMQ_URL;
 const STOCK_QUEUE = "restar_stock";
 
 let channel = null;
