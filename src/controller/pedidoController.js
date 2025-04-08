@@ -11,6 +11,7 @@ export const crearPedido = async (req, res) => {
     // Validar stock y calcular total
     for (const item of productos) {
       const producto = await obtenerProducto(item.productoId);
+      console.log(producto); // Verifica la respuesta completa del producto
       if (!producto || producto.stock < item.cantidad) {
         return res
           .status(400)
