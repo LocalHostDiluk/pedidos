@@ -1,5 +1,5 @@
 import axios from "axios";
-const PRODUCTOS_SERVICE_URL = process.env.PRODUCTOS_SERVICE_URL;
+const PRODUCTOS_SERVICE_URL = "https://productos-production-7f37.up.railway.app/app/products/producto/;
 
 export const obtenerProducto = async (productoId) => {
   try {
