@@ -7,7 +7,7 @@ router.post("/crear", crearPedido);
 router.get('/all', obtenerPedidos); 
 router.get('/pedido/:id', obtenerPedidoPorId); 
 router.delete('/cancelar/:id', cancelarPedido); 
-router.patch('/:id/estado', actualizarEstadoPedido); 
+router.patch('/actualizar/:id', actualizarEstadoPedido); 
 
 
 export default router;
