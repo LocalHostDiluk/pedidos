@@ -103,6 +103,31 @@ export const actualizarEstadoPedido = async (req, res) => {
   }
 };
 
+export const obtenerPedidosPorCliente = async (req, res) => {
+  try {
+    const { clienteId } = req.params;
+
+    const pedidosCliente = await Pedido.findAll({
+      where: {
+        clienteId: clienteId,
+      },
+    });
+
+    if (!pedidosCliente || pedidosCliente.length === 0) {
+      return res
+        .status(404)
+        .json({ error: `No se encontraron pedidos para el cliente con ID ${clienteId}.` });
+    }
+
+    res.status(200).json(pedidosCliente);
+  } catch (error) {
+    console.error("Error al obtener pedidos del cliente:", error);
+    res
+      .status(500)
+      .json({ error: "No se pudieron obtener los pedidos del cliente." });
+  }
+};
+
 // Cancelar un pedido (cambiar estado a "cancelado")
 export const cancelarPedido = async (req, res) => {
   try {
