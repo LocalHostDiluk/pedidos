@@ -4,7 +4,7 @@ const PRODUCTOS_SERVICE_URL = "https://productos-production-7f37.up.railway.app/
 
 export const obtenerProducto = async (productoId) => {
   try {
-    const response = await axios.post(`${PRODUCTOS_SERVICE_URL}${productoId}`);
+    const response = await axios.get(`${PRODUCTOS_SERVICE_URL}${productoId}`);
     return response.data;
   } catch (error) {
     console.error(`Error al obtener producto ${productoId}:`, error);
