@@ -22,25 +22,25 @@ export const crearPedido = async (req, res) => {
 
     // Crear pedido
     const pedido = await Pedido.create({ clienteId, total });
-
-    // Registrar productos y enviar mensaje de stock a restar
-    for (const item of productos) {
-      await PedidoProducto.create({
+    
+      // Registrar productos y enviar mensaje de stock a restar
+      for (const item of productos) {
+        await PedidoProducto.create({
+          pedidoId: pedido.id,
+          productoId: item.productoId,
+          cantidad: item.cantidad,
+        });
+  
+      res.status(201).json({
+        mensaje: "Pedido creado exitosamente",
         pedidoId: pedido.id,
-        productoId: item.productoId,
-        cantidad: item.cantidad,
+        total,
       });
-
-    res.status(201).json({
-      mensaje: "Pedido creado exitosamente",
-      pedidoId: pedido.id,
-      total,
-    });
-  } catch (error) {
-    console.error("❌ Error al crear pedido:", error);
-    res.status(500).json({ error: "Error al procesar el pedido." });
-  }
-};
+    } catch (error) {
+      console.error("❌ Error al crear pedido:", error);
+      res.status(500).json({ error: "Error al procesar el pedido." });
+    }
+  };
 
 export const obtenerPedidos = async (req, res) => {
   try {
