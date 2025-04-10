@@ -31,13 +31,6 @@ export const crearPedido = async (req, res) => {
         cantidad: item.cantidad,
       });
 
-      // 🔁 Enviar mensaje a RabbitMQ
-      await sendStockUpdate({
-        productoId: item.productoId,
-        cantidad: item.cantidad,
-      });
-    }
-
     res.status(201).json({
       mensaje: "Pedido creado exitosamente",
       pedidoId: pedido.id,
