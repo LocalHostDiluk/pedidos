@@ -8,6 +8,6 @@ router.get('/all', obtenerPedidos);
 router.get('/pedido/:id', obtenerPedidoPorId); 
 router.delete('/cancelar/:id', cancelarPedido); 
 router.patch('/actualizar/:id', actualizarEstadoPedido);
-router.get('/pedido/cliente/:clienteId', obtenerPedidosPorCliente); // Define la nueva ruta
+router.get('/cliente/:clienteId', obtenerPedidosPorCliente); // Define la nueva ruta
 
 export default router;
