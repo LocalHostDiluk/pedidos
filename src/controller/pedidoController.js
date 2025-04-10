@@ -6,41 +6,51 @@ import { sendStockUpdate } from "../services/rabbitService.js";
 export const crearPedido = async (req, res) => {
   try {
     const { clienteId, productos } = req.body;
+
+    if (!clienteId || !Array.isArray(productos) || productos.length === 0) {
+      return res.status(400).json({ error: "Datos de pedido inválidos." });
+    }
+
     let total = 0;
 
     // Validar stock y calcular total
     for (const item of productos) {
       const producto = await obtenerProducto(item.productoId);
-      console.log(producto); // Verifica la respuesta completa del producto
+
       if (!producto || producto.stock < item.cantidad) {
         return res
           .status(400)
-          .json({ error: `Producto ${item.productoId} no disponible.` });
+          .json({ error: `Producto ${item.productoId} no disponible o sin stock suficiente.` });
       }
+
       total += producto.precio * item.cantidad;
     }
 
-    // Crear pedido
+    // Crear el pedido
     const pedido = await Pedido.create({ clienteId, total });
-    
-      // Registrar productos y enviar mensaje de stock a restar
-      for (const item of productos) {
-        await PedidoProducto.create({
-          pedidoId: pedido.id,
-          productoId: item.productoId,
-          cantidad: item.cantidad,
-        });
-  
-      res.status(201).json({
-        mensaje: "Pedido creado exitosamente",
+
+    // Asociar productos al pedido
+    for (const item of productos) {
+      await PedidoProducto.create({
         pedidoId: pedido.id,
-        total,
+        productoId: item.productoId,
+        cantidad: item.cantidad,
       });
-    } catch (error) {
-      console.error("❌ Error al crear pedido:", error);
-      res.status(500).json({ error: "Error al procesar el pedido." });
+
+      // Aquí podrías emitir un mensaje para restar stock si usas un sistema como RabbitMQ
     }
-  };
+
+    res.status(201).json({
+      mensaje: "Pedido creado exitosamente",
+      pedidoId: pedido.id,
+      total,
+    });
+
+  } catch (error) {
+    console.error("❌ Error al crear pedido:", error);
+    res.status(500).json({ error: "Error al procesar el pedido." });
+  }
+};
 
 export const obtenerPedidos = async (req, res) => {
   try {
